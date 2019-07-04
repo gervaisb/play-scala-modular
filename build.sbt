@@ -11,6 +11,7 @@ lazy val root = (project in file("."))
   )
   .aggregate(
     domain,
+    module,
     web
   )
 
@@ -19,9 +20,17 @@ lazy val domain = (project in file("domain"))
     libraryDependencies += scalaTest % Test
   )
 
+lazy val module = (project in file("module"))
+  .dependsOn(domain)
+  .settings(
+    libraryDependencies += scalaTest % Test,
+    libraryDependencies += playCore
+  )
+
 lazy val web = (project in file("web"))
   .enablePlugins(PlayScala)
   .dependsOn(domain)
+  .dependsOn(module)
   .settings(
     libraryDependencies += scalaTest % Test,
 
